@@ -9,15 +9,16 @@ const search = async (term) => {
   await openBrowser();
   await login();
   animeList.each((i, el) => {
-    const drive = fetchDrive($(el).find(".post-title").attr("href"));
-    console.log(drive.then((res) => res).catch((err) => err));
     animeArr.push({
       title: $(el).find(".post-title").text().trim(),
       img: $(el).find(".img-holder").attr("data-bsrjs"),
       link: $(el).find(".post-title").attr("href"),
-      drive: drive.then((res) => res).catch((err) => err),
     });
   });
+  for (const anime of animeArr) {
+    const drive = await fetchDrive(anime.link)
+    anime.drive = drive
+  }
   console.log(animeArr);
   return animeArr;
 };

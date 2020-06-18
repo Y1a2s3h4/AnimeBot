@@ -3,8 +3,12 @@ let browser,
   url = "https://animekayo.com";
 
 const openBrowser = async () => {
-  browser = await puppeteer.launch();
-  console.log("Browser Opened");
+  try {
+    browser = await puppeteer.launch({headless: false});
+    console.log("Browser Opened");
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const login = async () => {
@@ -37,31 +41,22 @@ const login = async () => {
 };
 const fetchDrive = async (link) => {
   const page = await browser.newPage();
-  await page.setDefaultNavigationTimeout(0);
   try {
+    await page.setDefaultNavigationTimeout(0);
     await page.goto(link);
-    const selector = await page.waitFor(".downloadbutton");
-    // if (selector == ".downloadbutton") {
+    await page.waitFor(".downloadbutton");
     await page.$eval(".downloadbutton", (el) => el.click());
-    // } else {
-    //   link = await page.$eval(".downloadbutton", (el) =>
-    //     el.getAttribute("href")
-    //   );
-    //   await page.goto(link);
-    // }
     await page.waitFor("#form-captcha");
     await page.$eval("#form-captcha", (submit) => submit.submit());
     await page.waitFor("form");
     await page.$eval("form", (submit) => submit.submit());
     await page.waitForNavigation();
     const driveURL = await page.evaluate(() => window.location.href);
-    await page.close();
     console.log(driveURL);
-    browser.close();
-    return driveURL;
+    await page.close();
+    return await driveURL;
   } catch (err) {
     await page.close();
-    console.log(err);
   }
 };
 
