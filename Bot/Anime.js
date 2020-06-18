@@ -1,7 +1,5 @@
 const puppeteer = require("puppeteer");
-let browser,
-  url = "https://animekayo.com";
-
+let browser;
 const openBrowser = async () => {
   try {
     browser = await puppeteer.launch({headless: false});
@@ -10,7 +8,6 @@ const openBrowser = async () => {
     console.log(err);
   }
 };
-
 const login = async () => {
   const page = await browser.newPage();
   await page.setDefaultNavigationTimeout(0);
@@ -18,13 +15,6 @@ const login = async () => {
     await page.goto(
       "https://animekayo.com/anime-series/shingeki-no-kyojin-season-3-part-2-720p-bd-dual-audio-hevc/"
     );
-
-    // await page.waitFor(
-    //   "#post-39918 > div.entry-content.clearfix.single-post-content > div.su-guests > div:nth-child(3)"
-    // );
-    // await page.click(
-    //   "#post-39918 > div.entry-content.clearfix.single-post-content > div.su-guests > div:nth-child(3)"
-    // );
     await page.waitFor("#wpforms-37482-field_0");
     await page.type("#wpforms-37482-field_0", "Ahbabssjaj");
     await page.waitFor("#wpforms-37482-field_1");
@@ -59,5 +49,4 @@ const fetchDrive = async (link) => {
     await page.close();
   }
 };
-
 module.exports = { openBrowser, login, fetchDrive };
