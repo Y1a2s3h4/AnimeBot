@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 let browser;
 const openBrowser = async () => {
   try {
-    browser = await puppeteer.launch({headless: false});
+    browser = await puppeteer.launch();
     console.log("Browser Opened");
   } catch (err) {
     console.log(err);
