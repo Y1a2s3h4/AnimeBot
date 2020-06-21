@@ -2,7 +2,10 @@ const puppeteer = require("puppeteer");
 let browser;
 const openBrowser = async () => {
   try {
-    browser = await puppeteer.launch();
+    browser = await puppeteer.launch({
+      args: ["--no-sandbox"],
+      headless: false,
+    });
     console.log("Browser Opened");
   } catch (err) {
     console.log(err);
@@ -13,10 +16,10 @@ const login = async () => {
   await page.setDefaultNavigationTimeout(0);
   try {
     await page.goto(
-      "https://animekayo.com/anime-series/shingeki-no-kyojin-season-3-part-2-720p-bd-dual-audio-hevc/"
+      "https://animekayo.com/anime-series/psycho-pass-2-480p-bd-dual-audio-hevc/"
     );
-    await page.waitFor("#wpforms-37482-field_0");
-    await page.type("#wpforms-37482-field_0", "Ahbabssjaj");
+    await page.waitFor("#wpforms-37482-field_0"),
+      await page.type("#wpforms-37482-field_0", "Ahbabssjaj");
     await page.waitFor("#wpforms-37482-field_1");
     await page.type("#wpforms-37482-field_1", "yash123$");
     const pass = await page.$("#wpforms-submit-37482");
@@ -31,8 +34,8 @@ const login = async () => {
 };
 const fetchDrive = async (link) => {
   const page = await browser.newPage();
+  await page.setDefaultNavigationTimeout(0);
   try {
-    await page.setDefaultNavigationTimeout(0);
     await page.goto(link);
     await page.waitFor(".downloadbutton");
     await page.$eval(".downloadbutton", (el) => el.click());
