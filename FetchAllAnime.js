@@ -22,11 +22,10 @@ const allAnime = async (url) => {
     });
   });
   for (const anime of animes) {
-    const drive = await fetchDrive(anime.link);
-    if (!!(anime.drive == drive)) {
+    if (!!anime.drive) {
       console.log("Link already there...");
-      anime.drive = drive;
     } else {
+      const drive = await fetchDrive(anime.link);
       anime.drive = drive;
       fs.writeFileSync("./Animes.json", JSON.stringify(animes), {
         encoding: "utf-8",
