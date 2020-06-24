@@ -1,6 +1,7 @@
 const cheerio = require("cheerio");
 const request = require("request-promise");
 const fs = require("fs");
+const arr = require("./utils");
 const { openBrowser, login, fetchDrive } = require("./Bot/Anime");
 const allAnime = async (url) => {
   const html = await request(url);
@@ -21,18 +22,19 @@ const allAnime = async (url) => {
       link,
     });
   });
-  for (const anime of animes) {
-    if (!!anime.drive) {
-      console.log("Link already there...");
-    } else {
-      const drive = await fetchDrive(anime.link);
-      anime.drive = drive;
-      fs.writeFileSync("./Animes.json", JSON.stringify(animes), {
-        encoding: "utf-8",
-      });
-    }
+  for (const anime of arr) {
+    // if (!!anime.drive) {
+    //   console.log("Link already there...");
+    // } else {
+    const drive = await fetchDrive(anime.link);
+    anime.drive = drive;
+    console.log(arr);
+    // fs.writeFileSync("./Animes.json", JSON.stringify(animes), {
+    //   encoding: "utf-8",
+    // });
+    // }
   }
-  console.log(animes);
+  // console.log(animes);
   console.log("Done ...");
 };
 allAnime("https://animekayo.com/download-anime-series/");
